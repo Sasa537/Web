@@ -1,8 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request,redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
@@ -22,9 +23,25 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/add')
+@app.route('/add', methods=['POST', 'GET'])
 def add():
-    return render_template("add.html")
+    if request.method == "POST":
+        title = request.form['title']
+        intro = request.form['intro']
+        text = request.form['text']
+
+        article = Article(title=title, intro=intro, text=text)
+
+        try:
+           db.session.add(article)
+           db.session.commit
+           return redirect('/')
+
+        except:
+            return "Ошибка при добавлении"
+
+    else:
+        return render_template("add.html")
 
 
 
