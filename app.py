@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
 
@@ -38,10 +39,15 @@ def add():
 
         article = Article(title=title, intro=intro, text=text)
 
+
         try:
-           db.session.add(article)
-           db.session.commit
-           return redirect('/')
+            if title and intro and text:
+             db.session.add(article)
+             db.session.commit()
+             return redirect('/')
+
+            else:
+                return redirect('/add')
 
         except:
             return "Error adding"
