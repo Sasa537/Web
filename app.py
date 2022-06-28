@@ -38,7 +38,7 @@ def add():
            return redirect('/')
 
         except:
-            return "Ошибка при добавлении"
+            return "Error adding"
 
     else:
         return render_template("add.html")

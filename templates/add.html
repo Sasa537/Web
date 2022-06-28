@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
 {% block title %}
-<title> Онлайн Блог </title>
+<title> Blog </title>
 {% endblock %}
 
 {% block body %}
-<h1>Добавление Статьи</h1>
+<h1>Add the article</h1>
 <form method="post" >
-    <input type="text" name="title" id="title" class="form-control" placeholder="Введите заголовок статьи" align="center"><br>
-    <textarea name="intro" id="intro" class="form-control" placeholder="Введите краткое описание статьи" align="center"></textarea><br>
-    <textarea name="text" id="text" class="form-control" placeholder="Введите полный текст  статьи" align="center"></textarea><br>
-    <input type="submit"  class="btn btn-success" value="Опубликовать">
+    <input type="text" name="title" id="title" class="form-control" placeholder="Enter article title" align="center"><br>
+    <textarea name="intro" id="intro" class="form-control" placeholder="Enter a brief description of the article" align="center"></textarea><br>
+    <textarea name="text" id="text" class="form-control" placeholder="Enter the full text of the article" align="center"></textarea><br>
+    <input type="submit"  class="btn btn-success" value="Add">
 </form>
 {% endblock %}
