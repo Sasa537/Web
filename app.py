@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -21,7 +22,7 @@ class Article(db.Model):
         self.text = text
 
     def __repr__(self):
-         return '<Article %r>' % self.id
+        return '<Article %r>' % self.id
 
 
 @app.route('/')
@@ -39,12 +40,11 @@ def add():
 
         article = Article(title=title, intro=intro, text=text)
 
-
         try:
             if title and intro and text:
-             db.session.add(article)
-             db.session.commit()
-             return redirect('/')
+                db.session.add(article)
+                db.session.commit()
+                return redirect('/')
 
             else:
                 return redirect('/add')
@@ -54,6 +54,12 @@ def add():
 
     else:
         return render_template("add.html")
+
+
+@app.route('/posts/<int:id>')
+def posts(id):
+    article = Article.query.get(id)
+    return render_template("posts.html", art=article)
 
 
 if __name__ == "__main__":

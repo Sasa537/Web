@@ -5,29 +5,15 @@
 {% endblock %}
 
 {% block body %}
-<div class="container py-3">
-
-
-  <main>
-    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-
-      <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm">
-          <div class="card-header py-3">
-            <h4 class="my-0 fw-normal"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{article[0].title}}</font></font></h4>
-          </div>
-          <div class="card-body">
-
-            <ul class="list-unstyled mt-3 mb-4">
-              <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{article[0].intro}}</font></font></li>
-
-            </ul>
-            <button type="button" class="w-100 btn btn-lg btn-outline-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">More Information</font></font></button>
-          </div>
-        </div>
-      </div>
+    <div class="container mt-5">
+      {% for el in article%}
+      <div class="alert alert-info">
+      <h2>{{el.title}}</h2>
+      <p>{{el.intro}}</p>
+      <p><b> Publication date: {{el.date.date()}}</b></p>
+      <a href="/posts/{{el.id}}" class = "btn btn-warning">More</a>
+         </div>
+      {% endfor%}
 
     </div>
-  </main>
-</div>
 {% endblock %}
