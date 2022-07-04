@@ -8,6 +8,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
+
 # класс модели
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -74,6 +75,22 @@ def post_delete(id):
         return "При удалении статьи произошла ошибка"
 
 
+@app.route('/posts/<int:id>/update', methods=['POST', 'GET'])
+def post_update(id):
+    article = Article.query.get(id)
+    if request.method == "POST":
+        article.title = request.form['title']
+        article.intro = request.form['intro']
+        article.text = request.form['text']
+
+        try:
+            db.session.commit()
+            return redirect('/')
+        except:
+            return "При редактировании статьи произошла ошибка"
+    else:
+        article = Article.query.get(id)
+        return render_template("update.html", art=article)
 
 
 if __name__ == "__main__":
