@@ -27,7 +27,7 @@ class Article(db.Model):
 
 @app.route('/')
 def index():
-    articles = Article.query.order_by(Article.date).all()
+    articles = Article.query.order_by(Article.date.desc()).all()
     return render_template("index.html", article=articles)
 
 
@@ -60,6 +60,20 @@ def add():
 def posts(id):
     article = Article.query.get(id)
     return render_template("posts.html", art=article)
+
+
+@app.route('/posts/<int:id>/delete')
+def post_delete(id):
+    article = Article.query.get_or_404(id)
+
+    try:
+        db.session.delete(article)
+        db.session.commit()
+        return redirect('/')
+    except:
+        return "При удалении статьи произошла ошибка"
+
+
 
 
 if __name__ == "__main__":
