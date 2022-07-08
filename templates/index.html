@@ -15,5 +15,8 @@
          </div>
       {% endfor%}
 
+           {% if status %}
+           <a href="/logout" class = "btn btn-warning">LogOut</a>
+           {% endif %}
     </div>
 {% endblock %}
