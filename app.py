@@ -1,60 +1,19 @@
-from werkzeug.security import generate_password_hash, check_password_hash
+from user import User, db_user, login
+from article import Article, db
 from flask import Flask, render_template, request, redirect
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-from flask_login import LoginManager, login_required, login_user, current_user
-from flask_login import UserMixin, logout_user
+from flask_login import login_required, login_user, current_user
+from flask_login import logout_user
 
 app = Flask(__name__)
-login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+login.init_app(app)
+login.login_view = 'login'
 app.config['SECRET_KEY'] = 'a really really really really long secret key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_ECHO'] = True
-db = SQLAlchemy(app)
-
-
-# класс модели
-class Article(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    intro = db.Column(db.String(300), nullable=False)
-    text = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime, default=datetime.utcnow())
-
-    def __init__(self, title, intro, text):
-        self.title = title
-        self.intro = intro
-        self.text = text
-
-    def __repr__(self):
-        return '<Article %r>' % self.id
-
-
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(300), nullable=False)
-    password_hash = db.Column(db.String())
-
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
-
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def __repr__(self):
-        return '<User %r>' % self.id
-
-    @login_manager.user_loader
-    def load_user(id):
-        return User.query.get(int(id))
+db_user.init_app(app)
+db.init_app(app)
 
 
 @app.route('/')
